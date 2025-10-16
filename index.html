@@ -16,6 +16,7 @@
       <a class="brand" href="#">👋 <span id="brandName">Your Name</span></a>
       <nav class="nav">
         <button id="themeToggle" class="icon-button" aria-label="Toggle dark mode" title="Toggle theme">🌙</button>
+        <button id="manageDataBtn" class="icon-button" aria-label="Manage data" title="Manage data">⚙️</button>
       </nav>
     </div>
   </header>
@@ -69,6 +70,43 @@
       <span id="footerText" class="muted">© <span id="year"></span> Your Name. All rights reserved.</span>
     </div>
   </footer>
+
+  <!-- Data management panel -->
+  <div id="dataPanel" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="dataPanelTitle">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="dataPanelTitle">Manage Portfolio Data</h3>
+        <button id="panelClose" class="icon-button" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="panel-row">
+          <label for="dataUrl">Data URL</label>
+          <input id="dataUrl" class="input" type="url" placeholder="https://.../portfolio.json" />
+          <div class="row">
+            <button id="loadFromUrlBtn" class="button">Load from URL</button>
+            <button id="shareLinkBtn" class="button">Copy shareable link</button>
+          </div>
+        </div>
+
+        <div class="panel-row">
+          <label for="dataFile">Upload JSON file</label>
+          <input id="dataFile" type="file" accept="application/json" />
+        </div>
+
+        <div class="panel-row">
+          <label for="dataEditor">Editor</label>
+          <textarea id="dataEditor" class="textarea" rows="12" spellcheck="false"></textarea>
+          <div class="row">
+            <button id="saveLocalBtn" class="button primary">Save Locally</button>
+            <button id="resetDefaultBtn" class="button">Reset to Default</button>
+            <button id="downloadBtn" class="button">Download JSON</button>
+          </div>
+        </div>
+
+        <p class="muted small">Tip: Host JSON at a public URL (e.g., a GitHub Gist raw link) and set it above.</p>
+      </div>
+    </div>
+  </div>
 
   <script src="/scripts/app.js" type="module"></script>
 </body>

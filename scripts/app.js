@@ -1,10 +1,53 @@
 const $ = (s,ctx=document)=>ctx.querySelector(s);
 const $$ = (s,ctx=document)=>Array.from(ctx.querySelectorAll(s));
 
-async function loadData(){
-  const res = await fetch('/data/portfolio.json', { cache: 'no-store' });
-  if(!res.ok) throw new Error('Failed to load portfolio.json');
+function getQueryParam(name){
+  const p = new URLSearchParams(location.search);
+  return p.get(name);
+}
+
+function getLocalData(){
+  const raw = localStorage.getItem('portfolio:data');
+  if(!raw) return null;
+  try { return JSON.parse(raw); } catch { return null; }
+}
+
+function setLocalData(data){
+  localStorage.setItem('portfolio:data', JSON.stringify(data, null, 2));
+}
+
+function getLocalDataUrl(){
+  return localStorage.getItem('portfolio:dataUrl');
+}
+
+function setLocalDataUrl(url){
+  if(url) localStorage.setItem('portfolio:dataUrl', url); else localStorage.removeItem('portfolio:dataUrl');
+}
+
+async function fetchJson(url){
+  const res = await fetch(url, { cache: 'no-store' });
+  if(!res.ok) throw new Error(`Failed to fetch ${url}`);
   return res.json();
+}
+
+async function loadData(){
+  // Priority: URL query (?data=), then saved URL, then local JSON file, then localStorage fallback
+  const queryUrl = getQueryParam('data');
+  const storedUrl = getLocalDataUrl();
+  if(queryUrl){
+    const data = await fetchJson(queryUrl);
+    return data;
+  }
+  if(storedUrl){
+    try { return await fetchJson(storedUrl); } catch(e){ console.warn(e); }
+  }
+  try {
+    return await fetchJson('/data/portfolio.json');
+  } catch(e){
+    const local = getLocalData();
+    if(local) return local;
+    throw e;
+  }
 }
 
 function applyTheme(pref){
@@ -177,6 +220,81 @@ function initInteractions(projects){
     const next = document.documentElement.classList.contains('light') ? 'dark' : 'light';
     applyTheme(next);
   });
+
+  // Data panel interactions
+  const dataPanel = $('#dataPanel');
+  const editor = $('#dataEditor');
+  const dataUrlInput = $('#dataUrl');
+  const openPanel = ()=>{ dataPanel.classList.remove('hidden'); };
+  const closePanel = ()=>{ dataPanel.classList.add('hidden'); };
+  $('#manageDataBtn').addEventListener('click', ()=>{
+    const current = getLocalData() || {};
+    editor.value = JSON.stringify(current && Object.keys(current).length ? current : { profile:{}, projects:[], achievements:[], contact:{} }, null, 2);
+    dataUrlInput.value = getLocalDataUrl() || getQueryParam('data') || '';
+    openPanel();
+  });
+  $('#panelClose').addEventListener('click', closePanel);
+  dataPanel.addEventListener('click', (e)=>{ if(e.target === dataPanel) closePanel(); });
+
+  $('#saveLocalBtn').addEventListener('click', ()=>{
+    try{
+      const json = JSON.parse(editor.value);
+      setLocalData(json);
+      // Re-render from local data immediately
+      renderHeader(json.profile||{});
+      renderTagFilters(uniqueTags(json.projects||[]));
+      renderProjects(computeVisibleProjects(json.projects||[], { search:'', tags:new Set(), sort:'recent' }));
+      renderAchievements(json.achievements||[]);
+      renderContact(json.contact||{});
+      initInteractions(json.projects||[]);
+      alert('Saved locally.');
+    }catch(err){
+      alert('Invalid JSON: ' + err.message);
+    }
+  });
+
+  $('#resetDefaultBtn').addEventListener('click', async ()=>{
+    try{
+      const def = await fetchJson('/data/portfolio.json');
+      editor.value = JSON.stringify(def, null, 2);
+    }catch(err){ alert('Failed to load default JSON.'); }
+  });
+
+  $('#downloadBtn').addEventListener('click', ()=>{
+    const blob = new Blob([editor.value], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'portfolio.json'; a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  $('#loadFromUrlBtn').addEventListener('click', async ()=>{
+    const url = dataUrlInput.value.trim();
+    if(!url) return alert('Enter a URL');
+    try{
+      const json = await fetchJson(url);
+      editor.value = JSON.stringify(json, null, 2);
+      setLocalDataUrl(url);
+      // Render from remote
+      renderHeader(json.profile||{});
+      renderTagFilters(uniqueTags(json.projects||[]));
+      renderProjects(computeVisibleProjects(json.projects||[], { search:'', tags:new Set(), sort:'recent' }));
+      renderAchievements(json.achievements||[]);
+      renderContact(json.contact||{});
+      initInteractions(json.projects||[]);
+      alert('Loaded from URL and applied.');
+    }catch(err){
+      alert('Failed to fetch URL: ' + err.message);
+    }
+  });
+
+  $('#shareLinkBtn').addEventListener('click', ()=>{
+    const url = dataUrlInput.value.trim();
+    if(!url) return alert('Enter a URL');
+    const u = new URL(location.href);
+    u.searchParams.set('data', url);
+    navigator.clipboard.writeText(u.toString()).then(()=>alert('Shareable link copied!'));
+  });
 }
 
 async function main(){
@@ -190,6 +308,9 @@ async function main(){
     renderAchievements(data.achievements||[]);
     renderContact(data.contact||{});
     initInteractions(data.projects||[]);
+    // Pre-fill editor if panel opened later
+    const editor = document.getElementById('dataEditor');
+    if(editor){ editor.value = JSON.stringify(data, null, 2); }
   }catch(err){
     console.error(err);
     $('#projectsGrid').innerHTML = '<div class="muted">Failed to load data.</div>';

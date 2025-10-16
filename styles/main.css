@@ -83,6 +83,18 @@ body{
 .site-footer{border-top:1px solid var(--border);padding:16px 0;margin-top:40px}
 .footer-inner{display:flex;justify-content:center}
 
+/* Modal and inputs */
+.hidden{display:none}
+.modal{position:fixed;inset:0;display:grid;place-items:center;background:color-mix(in srgb, var(--bg), transparent 30%);backdrop-filter:blur(6px);padding:20px}
+.modal-content{width:min(900px, 100%);background:var(--bg-elev);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--border)}
+.modal-body{padding:14px;display:grid;gap:16px}
+.panel-row{display:grid;gap:8px}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.input, .textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text)}
+.textarea{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
+.small{font-size:12px}
+
 @media (max-width: 800px){
   .hero{grid-template-columns:80px 1fr}
   .avatar{width:80px;height:80px}
