@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Portfolio</title>
+  <meta name="description" content="Projects, achievements, and contact info">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#">👋 <span id="brandName">Your Name</span></a>
+      <nav class="nav">
+        <button id="themeToggle" class="icon-button" aria-label="Toggle dark mode" title="Toggle theme">🌙</button>
+        <button id="manageDataBtn" class="icon-button" aria-label="Manage data" title="Manage data">⚙️</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <img id="avatar" class="avatar" src="" alt="Profile avatar"/>
+      <div class="hero-text">
+        <h1 id="headline">I build impactful web products.</h1>
+        <p id="bio" class="muted">Short bio goes here.</p>
+        <div class="hero-cta">
+          <a id="primaryCta" class="button primary" href="#projects">View Projects</a>
+          <a id="secondaryCta" class="button" href="#contact">Contact</a>
+        </div>
+        <div id="socialLinks" class="social-links" aria-label="Social links"></div>
+      </div>
+    </section>
+
+    <section class="controls">
+      <input id="searchInput" class="search" type="search" placeholder="Search projects..." aria-label="Search projects"/>
+      <div id="tagFilters" class="tags" role="toolbar" aria-label="Filter by tag"></div>
+      <select id="sortSelect" class="select" aria-label="Sort projects">
+        <option value="recent">Most recent</option>
+        <option value="alpha">Alphabetical</option>
+        <option value="stars">Most liked</option>
+      </select>
+    </section>
+
+    <section id="projects" class="section">
+      <h2>Projects</h2>
+      <div id="projectsGrid" class="grid"></div>
+    </section>
+
+    <section id="achievements" class="section">
+      <h2>Achievements</h2>
+      <ul id="achievementsList" class="timeline"></ul>
+    </section>
+
+    <section id="contact" class="section">
+      <h2>Contact</h2>
+      <div class="contact-card">
+        <p>Email: <a id="contactEmail" href="#"></a></p>
+        <p>Location: <span id="contactLocation"></span></p>
+        <div id="contactLinks" class="social-links"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span id="footerText" class="muted">© <span id="year"></span> Your Name. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <!-- Data management panel -->
+  <div id="dataPanel" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="dataPanelTitle">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="dataPanelTitle">Manage Portfolio Data</h3>
+        <button id="panelClose" class="icon-button" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="panel-row">
+          <label for="dataUrl">Data URL</label>
+          <input id="dataUrl" class="input" type="url" placeholder="https://.../portfolio.json" />
+          <div class="row">
+            <button id="loadFromUrlBtn" class="button">Load from URL</button>
+            <button id="shareLinkBtn" class="button">Copy shareable link</button>
+          </div>
+        </div>
+
+        <div class="panel-row">
+          <label for="dataFile">Upload JSON file</label>
+          <input id="dataFile" type="file" accept="application/json" />
+        </div>
+
+        <div class="panel-row">
+          <label for="dataEditor">Editor</label>
+          <textarea id="dataEditor" class="textarea" rows="12" spellcheck="false"></textarea>
+          <div class="row">
+            <button id="saveLocalBtn" class="button primary">Save Locally</button>
+            <button id="resetDefaultBtn" class="button">Reset to Default</button>
+            <button id="downloadBtn" class="button">Download JSON</button>
+          </div>
+        </div>
+
+        <p class="muted small">Tip: Host JSON at a public URL (e.g., a GitHub Gist raw link) and set it above.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="/scripts/app.js" type="module"></script>
+</body>
+</html>

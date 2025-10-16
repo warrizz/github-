@@ -1,0 +1,57 @@
+{
+  "profile": {
+    "name": "Your Name",
+    "headline": "I build impactful web products.",
+    "bio": "Full-stack engineer focused on delightful UX and reliable systems.",
+    "avatar": "https://avatars.githubusercontent.com/u/9919?v=4",
+    "links": [
+      { "label": "GitHub", "url": "https://github.com/your" },
+      { "label": "LinkedIn", "url": "https://linkedin.com/in/your" },
+      { "label": "Twitter", "url": "https://twitter.com/your" }
+    ]
+  },
+  "projects": [
+    {
+      "title": "AI Project Showcase",
+      "summary": "Searchable gallery for ML demos with GPU usage stats.",
+      "tags": ["AI", "React", "Node"],
+      "date": "2025-05-01",
+      "stars": 120,
+      "demo": "https://example.com/ai",
+      "repo": "https://github.com/your/ai",
+      "thumbnail": "https://picsum.photos/seed/ai/800/450"
+    },
+    {
+      "title": "Realtime Chat",
+      "summary": "WebSocket chat with end-to-end encryption.",
+      "tags": ["Security", "WebSocket", "Go"],
+      "date": "2024-11-20",
+      "stars": 86,
+      "demo": "https://example.com/chat",
+      "repo": "https://github.com/your/chat",
+      "thumbnail": "https://picsum.photos/seed/chat/800/450",
+      "caseStudy": "https://example.com/case-chat"
+    },
+    {
+      "title": "Design System",
+      "summary": "Accessible, themeable components and tokens.",
+      "tags": ["Design", "Accessibility", "TypeScript"],
+      "date": "2025-02-10",
+      "stars": 190,
+      "repo": "https://github.com/your/ds",
+      "thumbnail": "https://picsum.photos/seed/ds/800/450"
+    }
+  ],
+  "achievements": [
+    { "date": "2025-08", "title": "Spoke at JSConf", "description": "Talked about performance budgets at scale." },
+    { "date": "2025-03", "title": "Launched open-source library", "description": "1k+ stars in 3 months." },
+    { "date": "2024-12", "title": "Promotion to Senior Engineer", "description": "Led cross-team initiative reducing latency by 40%." }
+  ],
+  "contact": {
+    "email": "you@example.com",
+    "location": "Remote / Worldwide",
+    "links": [
+      { "label": "Calendly", "url": "https://calendly.com/your/intro" }
+    ]
+  }
+}
